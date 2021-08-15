@@ -1,0 +1,114 @@
+-- 1
+-- Write a query that returns a list of reservations that end in July 2023, including the name of the
+-- guest, the room number(s), and the reservation dates.
+-- 4 Rows
+
+SELECT Guest.Name, Reservation.Start, Reservation.end, Room.roomID
+From Guest 
+Inner Join Bridge1 
+ON Guest.guestID = bridge1.guestID
+Inner Join Reservation 
+On Bridge1.ReservationID = Reservation.ReservationID
+Inner Join Bridge2
+On Reservation.ReservationID = Bridge2.ReservationID
+Inner Join Room
+On Bridge2.RoomID = Room.RoomID
+where month(end) = 7;
+
+-- 2
+-- Write a query that returns a list of all reservations for rooms with a jacuzzi, displaying the guest's
+-- name, the room number, and the dates of the reservation.
+-- 11 Rows
+
+SELECT Guest.Name, Reservation.Start, Reservation.end, Room.roomID, Room.Amenities
+From Guest 
+Inner Join Bridge1 
+ON Guest.guestID = bridge1.guestID
+Inner Join Reservation 
+On Bridge1.ReservationID = Reservation.ReservationID
+Inner Join Bridge2
+On Reservation.ReservationID = Bridge2.ReservationID
+Inner Join Room
+On Bridge2.RoomID = Room.RoomID
+Where amenities like '%Jacuzzi%';
+
+-- 3
+-- Write a query that returns all the rooms reserved for a specific guest, including the guest's name,
+-- the room(s) reserved, the starting date of the reservation, and how many people were included in
+-- the reservation. (Choose a guest's name from the existing data.)
+-- 4 Rows
+
+SELECT Guest.Name, Reservation.Start, Reservation.end, Room.roomID, Reservation.adults + reservation.children AS Guests
+From Guest 
+Inner Join Bridge1 
+ON Guest.guestID = bridge1.guestID
+Inner Join Reservation 
+On Bridge1.ReservationID = Reservation.ReservationID
+Inner Join Bridge2
+On Reservation.ReservationID = Bridge2.ReservationID
+Inner Join Room
+On Bridge2.RoomID = Room.RoomID
+Where Name = 'Mack Simmer';
+
+
+-- 4
+-- Write a query that returns a list of rooms, reservation ID, and per-room cost for each
+-- reservation. The results should include all rooms, whether or not there is a reservation
+-- associated with the room.
+-- 27 rows
+
+SELECT room.roomid, reservation.reservationid, reservation.cost 
+FROM Reservation
+Inner Join Bridge2
+On Reservation.ReservationID = Bridge2.ReservationID
+Right Join Room
+On Bridge2.RoomID = Room.RoomID;
+
+
+-- 5
+-- Write a query that returns all the rooms accommodating at least three guests and that are reserved on any date in April 2023
+-- 0 rows
+
+SELECT Guest.Name, Reservation.Start, Reservation.end, Room.roomID, Reservation.adults + reservation.children AS Guests
+From Guest 
+Inner Join Bridge1 
+ON Guest.guestID = bridge1.guestID
+Inner Join Reservation 
+On Bridge1.ReservationID = Reservation.ReservationID
+Inner Join Bridge2
+On Reservation.ReservationID = Bridge2.ReservationID
+Inner Join Room
+On Bridge2.RoomID = Room.RoomID
+WHERE (month(start) = 4 OR month(end) = 4) and (Reservation.adults + reservation.children >= 3);
+
+
+-- 6
+-- Write a query that returns a list of all guest names and the number of reservations per guest,
+-- sorted starting with the guest with the most reservations and then by the guest's last name.
+-- 12 Rows
+
+
+SELECT   
+substring_Index(guest.name,' ',1) AS FirstName,
+substring_Index(guest.name,' ',-1) AS LastName,
+Count(guest.name) as TotalReservations
+From Guest 
+Inner Join Bridge1 
+ON Guest.guestID = bridge1.guestID
+Inner Join Reservation 
+On Bridge1.ReservationID = Reservation.ReservationID
+Inner Join Bridge2
+On Reservation.ReservationID = Bridge2.ReservationID
+Inner Join Room
+On Bridge2.RoomID = Room.RoomID
+GROUP BY name
+ORDER BY TotalReservations DESC, LastName;
+
+-- 7
+-- Write a query that displays the name, address, and phone number of a guest based on their
+-- phone number. (Choose a phone number from the existing data.)
+-- 1 Row
+
+SELECT Guest.Name, Guest.Address, Guest.City, Guest.State, Guest.Zip, Guest.Phone 
+From Guest
+where phone = '(514) 123-2722';
