@@ -1,0 +1,177 @@
+CREATE DATABASE IF NOT EXISTS Hotel;
+
+USE Hotel;
+
+CREATE TABLE IF NOT EXISTS Guest (
+	GuestID INT PRIMARY KEY AUTO_INCREMENT,
+    Name varchar(50) not null,
+    Address varchar (50) not null,
+    City varchar(50) not null,
+    State varchar(50) not null,
+    Zip varchar(50) not null,
+    Phone varchar(20) not null
+    );
+    
+CREATE TABLE IF NOT EXISTS Room (
+	RoomID INT PRIMARY KEY AUTO_INCREMENT,
+	Type varchar(50) NOT NULL,
+    Amenities varchar(50) not null,
+    ADA varchar(10) not null,
+    Occupancy int not null,
+    MaxOcp int not null,
+    BasePrice int not null,
+    ExtraPerson int 
+    );  
+        
+CREATE TABLE IF NOT EXISTS Reservation (
+	ReservationID INT PRIMARY KEY AUTO_INCREMENT,
+    Adults int not null,
+    Children int not null,
+    Start Date not null,
+    End date not null, Cost int not null);
+    
+CREATE TABLE IF NOT EXISTS BRIDGE1(
+GuestID INT NOT NULL,
+ReservationID INT NOT NULL,
+PRIMARY KEY pk_Bridge (GuestID, ReservationID),
+FOREIGN KEY fk_Bridge_Guest (GuestID) REFERENCES Guest (GuestID),
+FOREIGN KEY fk_Bridge_Res (ReservationID) REFERENCES Reservation (ReservationID)
+);
+
+CREATE TABLE IF NOT EXISTS BRIDGE2(
+ReservationID INT NOT NULL,
+RoomID INT NOT NULL,
+PRIMARY KEY pk_Bridge2 (ReservationID, RoomID),
+FOREIGN KEY fk_Bridge2_Room (ReservationID) REFERENCES Reservation (ReservationID),
+FOREIGN KEY fk_Bridge2_Res (RoomID) REFERENCES Room (RoomID)
+);
+
+
+INSERT INTO Guest (GuestID, Name, Address, City, State, Zip, Phone)
+VALUES 
+(012,	'Khaled Hassan',		'825 Boulevard One',	'Dallas',			'TX', '75028', '(514) 123-2722'),
+(001, 	'Mack Simmer', 			'379 Old Shore Street', 'Council Bluffs',	'IA', '51501', '(291) 553-0508'),
+(002,	'Bettyann Seery', 		'750 Wintergreen Dr.', 	'Wasilla', 			'AK', '99654', '(478) 277-9632'),
+(003, 	'Duane Cullison', 		'9662 Foxrun Lane', 	'Harlingen', 		'TX', '78552', '(308) 494-0198'),
+(004, 	'Karie Yang', 			'9378 W. Augusta Ave.', 'West Deptford',	'NJ', '08096', '(214) 730-0298'),
+(005, 	'Aurore Lipton', 		'762 Wild Rose Street', 'Saginaw', 			'MI', '48601', '(377) 507-0974'),
+(006, 	'Zachery Luechtefeld',	'7 Poplar Dr.', 		'Arvada', 			'CO', '80003', '(814) 485-2615'),
+(007,	'Jeremiah Pendergrass', '70 Oakwood St.', 		'Zion', 			'IL', '60099', '(279) 491-0960'),
+(008, 	'Walter Holaway', 		'7556 Arrowhead St.', 	'Cumberland', 		'RI', '02864', '(446) 396-6785'),
+(009, 	'Wilfred Vise', 		'77 West Surrey Street','Oswego', 			'NY', '13126', '(834) 727-1001'),
+(010, 	'Maritza Tilton', 		'939 Linda Rd.', 		'Burke', 			'VA', '22015', '(446) 351-6860'),
+(011, 	'Joleen Tison', 		'87 Queen St.', 		'Drexel Hill', 		'PA', '19026', '(231) 893-2755');
+
+
+
+INSERT INTO Room (RoomID, Type, Amenities, ADA, Occupancy , MaxOcp,BasePrice, ExtraPerson )
+VALUES
+(201,	'Double',	'Microwave, Jacuzzi', 				'No', 	2, 	4, 	199.99,	10),
+(202,	'Double',	'Refrigerator',						'Yes',	2,	4,	174.99,	10),
+(203,	'Double',	'Microwave, Jacuzzi',				'No',	2,	4,	199.99,	10),
+(204,	'Double',	'Refrigerator',						'Yes',	2,	4,	174.99,	10),
+(205,	'Single',	'Microwave, Refrigerator, Jacuzzi',	'No',	2,	2,	174.99,	NULL),
+(206,	'Single',	'Microwave, Refrigerator',			'Yes',	2,	2,	149.99,	NULL),
+(207,	'Single',	'Microwave, Refrigerator, Jacuzzi',	'No',	2,	2,	174.99,	NULL),
+(208,	'Single',	'Microwave, Refrigerator',			'Yes',	2,	2,	149.99,	NULL),
+(301,	'Double',	'Microwave, Jacuzzi',				'No',	2,	4,	199.99,	10),
+(302,	'Double',	'Refrigerator',						'Yes',	2,	4,	174.99,	10),
+(303,	'Double',	'Microwave, Jacuzzi',				'No',	2,	4,	199.99,	10),
+(304,	'Double',	'Refrigerator',						'Yes',	2,	4,	174.99,	10),
+(305,	'Single',	'Microwave, Refrigerator, Jacuzzi',	'No',   2,	2,	174.99,	NULL),
+(306,	'Single',	'Microwave, Refrigerator',			'Yes',	2,	2,	149.99,	NULL),
+(307,	'Single',	'Microwave, Refrigerator, Jacuzzi',	'No',	2,	2,	174.99,	NULL),
+(308,	'Single',	'Microwave, Refrigerator',			'Yes',	2,	2,	149.99,	NULL),
+(401,	'Suite'	,	'Microwave, Refrigerator, Oven',	'Yes',	3,	8,	399.99,	20),
+(402,	'Suite'	,	'Microwave, Refrigerator, Oven',	'Yes',	3,	8,	399.99,	20);
+
+
+
+
+INSERT INTO RESERVATION (ReservationID, Adults, Children, Start, End, Cost)
+VALUES
+(10,	1,	0,	'2023-2-2',		'2023-02-10',	229.98),
+(11,	2,	1,	'2023-2-5',		'2023-02-04',	999.95),
+(12,	2,	0,	'2023-2-22',	'2023-02-24',	349.98),
+(13,	2,	2,	'2023-3-6',		'2023-3-7',		199.99),
+(14,	1,	1,	'2023-3-17',	'2023-3-20',	524.97),
+(15,	3,	0,	'2023-3-18',	'2023-3-23',	924.95),
+(16,	2,	2,	'2023-3-29',	'2023-3-31',	349.98),
+(17,	2,	0,	'2023-3-31',	'2023-4-5',		874.95),
+(18,	1,	0,	'2023-4-9',		'2023-4-13',	799.96),
+(19,	1,	1,	'2023-4-23',	'2023-4-24',	174.99),
+(20,	2,	4,	'2023-5-30',	'2023-6-2',		1199.97),
+(21,	2,	0,	'2023-6-10',	'2023-6-14',	599.96),
+(22,	1,	0,	'2023-6-10',	'2023-6-14',	599.96),
+(23,	3,	0,	'2023-6-17',	'2023-6-18',	184.99),
+(24, 	2,	0,	'2023-6-28',	'2023-7-2',		699.96),
+(25, 	3,	1,	'2023-7-13',	'2023-7-14',	184.99),
+(26,	4,	2,	'2023-7-18',	'2023-7-21',	1259.97),
+(27, 	2,	1,	'2023-7-28',	'2023-7-29',	199.99),
+(28, 	1,	0,	'2023-8-30',	'2023-9-1',		349.98),
+(29,	2,	0,	'2023-9-16',	'2023-9-17',	149.99),
+(30,	2,	2,	'2023-9-13',	'2023-9-15',	399.98),
+(31, 	2,	2,	'2023-11-22',	'2023-11-25',	1199.97),
+(32,	2,	0,	'2023-11-22',	'2023-11-25',	449.97),
+(33,	2,	2,	'2023-11-22',	'2023-11-25',	599.97),
+(34,	2,	0,	'2023-12-24',	'2023-12-28',	699.96)
+;
+    
+INSERT INTO BRIDGE1 (GuestID, ReservationID)
+VALUES
+(001,10),
+(002,11),
+(003,12),
+(004,13),
+(012,14),
+(005,15),
+(006,16),
+(007,17),
+(008,18),
+(009,19),
+(010,20),
+(011,21),
+(011,22),
+(005,23),
+(012,24),
+(008,25),
+(009,26),
+(002,27),
+(002,28),
+(001,29),
+(004,30),
+(003,31),
+(001,32),
+(001,33),
+(010,34)
+;
+
+
+INSERT INTO BRIDGE2 (RoomID, ReservationID)
+VALUES
+(308,10),
+(203,11),
+(305,12),
+(201,13),
+(307,14),
+(302,15),
+(202,16),
+(304,17),
+(301,18),
+(207,19),
+(401,20),
+(206,21),
+(208,22),
+(304,23),
+(205,24),
+(204,25),
+(401,26),
+(303,27),
+(305,28),
+(208,29),
+(203,30),
+(401,31),
+(206,32),
+(301,33),
+(302,34)
+;
